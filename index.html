@@ -2,94 +2,187 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Jadwal Belajar Ishaq</title>
+  <title>Jadwal Ishaq</title>
   <style>
-    body {font-family: Arial; margin:0; background:#0f172a; color:white}
-    header {padding:20px; text-align:center; background:#1e293b}
-    nav {display:flex; gap:10px; justify-content:center; margin:10px}
-    button {padding:10px 15px; border:none; border-radius:10px; cursor:pointer}
-    .content {padding:20px}
-    .card {background:#1e293b; padding:15px; border-radius:15px; margin-bottom:10px}
+    body {
+      margin:0;
+      font-family: 'Segoe UI', sans-serif;
+      background:#ffffff;
+      color:#000000;
+    }header {
+  text-align:center;
+  padding:20px;
+  font-weight:bold;
+  border-bottom:1px solid #ddd;
+}
+
+nav {
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:center;
+  gap:10px;
+  padding:10px;
+}
+
+button {
+  padding:10px 16px;
+  border-radius:999px;
+  border:1px solid black;
+  background:white;
+  cursor:pointer;
+  transition:0.2s;
+  font-weight:500;
+}
+
+button:hover {
+  background:black;
+  color:white;
+}
+
+.content {
+  padding:20px;
+  max-width:500px;
+  margin:auto;
+}
+
+.card {
+  border:1px solid #ddd;
+  border-radius:20px;
+  padding:15px;
+  margin-bottom:10px;
+}
+
+.hidden {display:none}
+
   </style>
 </head>
 <body><header>
-  <h1>📚 Jadwal Belajar Ishaq</h1>
-  <p id="tanggal"></p>
+  Jadwal Belajar Ishaq
+  <div id="tanggal"></div>
 </header><nav>
-  <button onclick="showMenu('utama')">Menu Utama</button>
+  <button onclick="showMenu('utama')">Utama</button>
+  <button onclick="showMenu('harian')">Jadwal Harian</button>
   <button onclick="showMenu('hafalan')">Hafalan</button>
-  <button onclick="showMenu('baca')">Membaca</button>
   <button onclick="showMenu('murajaah')">Murajaah</button>
 </nav><div class="content" id="content"></div><script>
-const jadwal = {
-  utama: `
-    <div class='card'>
-    <h3>Hari Sekolah + Taklim</h3>
-    <p>04:30 - 05:30 : Hafalan Al-Qur'an & Qowaidul Arba</p>
-    <p>06:00 - 16:00 : Sekolah</p>
-    <p>18:00 - 20:00 : Taklim</p>
-    <p>20:15 - 21:45 : Belajar Kitab</p>
-    <p>21:45 - 22:15 : Tugas Sekolah</p>
-    </div>
 
-    <div class='card'>
-    <h3>Hari Non Taklim (Latihan Anggar)</h3>
-    <p>04:30 - 05:30 : Hafalan</p>
-    <p>06:00 - 16:00 : Sekolah</p>
-    <p>16:00 - 20:30 : Latihan Anggar</p>
-    <p>20:45 - 21:45 : Belajar Ringan</p>
-    <p>21:45 - 22:15 : Tugas</p>
-    </div>
+const data = {
 
-    <div class='card'>
-    <h3>Jumat (Free)</h3>
-    <p>Pagi: Hafalan</p>
-    <p>Siang: Istirahat</p>
-    <p>Malam: Belajar Bebas</p>
-    </div>
+utama: `
+<div class='card'>
+<h3>Hari Taklim</h3>
+<p>04:30 - 05:30 Hafalan</p>
+<p>06:00 - 16:00 Sekolah</p>
+<p>18:00 - 20:00 Taklim</p>
+<p>20:15 - 21:45 Kitab</p>
+<p>21:45 - 22:15 Tugas</p>
+</div>
+
+<div class='card'>
+<h3>Hari Anggar</h3>
+<p>04:30 - 05:30 Hafalan</p>
+<p>06:00 - 16:00 Sekolah</p>
+<p>16:00 - 20:30 Anggar</p>
+<p>20:45 - 21:45 Belajar</p>
+<p>21:45 - 22:15 Tugas</p>
+</div>
+`,
+
+harian: `
+<div class='card'>
+<h3>Pilih Hari</h3>
+<button onclick="showDay('senin')">Senin</button>
+<button onclick="showDay('selasa')">Selasa</button>
+<button onclick="showDay('rabu')">Rabu</button>
+<button onclick="showDay('kamis')">Kamis</button>
+<button onclick="showDay('jumat')">Jumat</button>
+<button onclick="showDay('ahad')">Ahad</button>
+</div>
+<div id="dayContent"></div>
+`,
+
+hafalan: `
+<div class='card'>
+<h3>Hafalan</h3>
+<p>Al-Qur'an 30 menit</p>
+<p>Qowaidul Arba 30 menit</p>
+</div>
+`,
+
+murajaah: `
+<div class='card'>
+<h3>Murajaah</h3>
+<p>Al-Qur'an</p>
+<p>Kitab</p>
+<p>Matan</p>
+</div>
+`
+};
+
+const harianDetail = {
+  senin: `
+  <div class='card'>
+  <h3>Senin (Bulughul Maram)</h3>
+  <p>Pagi: Hafalan</p>
+  <p>Sore: Sekolah</p>
+  <p>Malam: Taklim + Kitab</p>
+  </div>
   `,
 
-  hafalan: `
-    <div class='card'>
-    <h3>Hafalan Harian</h3>
-    <p>Al-Qur'an : 30 menit</p>
-    <p>Matan Qowaidul Arba : 30 menit</p>
-    </div>
+  selasa: `
+  <div class='card'>
+  <h3>Selasa (Anggar)</h3>
+  <p>Pagi: Hafalan</p>
+  <p>Sore: Anggar</p>
+  <p>Malam: Belajar ringan</p>
+  </div>
   `,
 
-  baca: `
-    <div class='card'>
-    <h3>Jadwal Membaca</h3>
-    <p>Kitabut Tauhid</p>
-    <p>Mukhtasor Fi Tafsir</p>
-    <p>Adabul Mufrod</p>
-    </div>
+  rabu: `
+  <div class='card'>
+  <h3>Rabu (Riyadus Shalihin)</h3>
+  <p>Pagi: Hafalan</p>
+  <p>Malam: Taklim + Kitab</p>
+  </div>
   `,
 
-  murajaah: `
-    <div class='card'>
-    <h3>Murajaah</h3>
-    <p>Al-Qur'an</p>
-    <p>Kitab</p>
-    <p>Matan</p>
-    </div>
+  kamis: `
+  <div class='card'>
+  <h3>Kamis (Fiqih & Asmaul Husna)</h3>
+  <p>Pagi: Hafalan</p>
+  <p>Malam: Taklim + Kitab</p>
+  </div>
+  `,
+
+  jumat: `
+  <div class='card'>
+  <h3>Jumat (Free)</h3>
+  <p>Istirahat & Murajaah</p>
+  </div>
+  `,
+
+  ahad: `
+  <div class='card'>
+  <h3>Ahad (Shahih Bukhari)</h3>
+  <p>Pagi: Hafalan</p>
+  <p>Malam: Taklim + Kitab</p>
+  </div>
   `
 };
 
 function showMenu(menu){
-  document.getElementById('content').innerHTML = jadwal[menu];
+  document.getElementById('content').innerHTML = data[menu];
 }
 
-// tanggal otomatis
-const hari = new Date();
-document.getElementById('tanggal').innerText = hari.toDateString();
-
-// auto berubah menu berdasarkan tanggal
-const day = hari.getDate();
-if(day % 2 == 0){
-  showMenu('utama');
-} else {
-  showMenu('hafalan');
+function showDay(day){
+  document.getElementById('dayContent').innerHTML = harianDetail[day];
 }
+
+// tanggal
+const t = new Date();
+document.getElementById('tanggal').innerText = t.toDateString();
+
+showMenu('utama');
+
 </script></body>
 </html>
