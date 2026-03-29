@@ -2,60 +2,94 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Jadwal Belajar Saya</title>
+  <title>Jadwal Belajar Ishaq</title>
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
-      color: white;
-      margin: 0;
-      padding: 20px;
-    }
-    h1 {
-      text-align: center;
-    }
-    .card {
-      background: rgba(255,255,255,0.1);
-      padding: 15px;
-      border-radius: 15px;
-      margin-bottom: 15px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-    }
-    .title {
-      font-weight: bold;
-      margin-bottom: 10px;
-    }
-    .checklist label {
-      display: block;
-      margin: 5px 0;
-    }
-    .footer {
-      text-align: center;
-      margin-top: 20px;
-      font-size: 12px;
-      opacity: 0.7;
-    }
+    body {font-family: Arial; margin:0; background:#0f172a; color:white}
+    header {padding:20px; text-align:center; background:#1e293b}
+    nav {display:flex; gap:10px; justify-content:center; margin:10px}
+    button {padding:10px 15px; border:none; border-radius:10px; cursor:pointer}
+    .content {padding:20px}
+    .card {background:#1e293b; padding:15px; border-radius:15px; margin-bottom:10px}
   </style>
 </head>
-<body><h1>📅 Jadwal Belajar Saya</h1><div class="card">
-  <div class="title">🌅 Pagi</div>
-  <p>04.30 - 05.15 → Hafalan Al-Qur'an</p>
-  <p>05.15 - 05.30 → Hafalan Matan</p>
-</div><div class="card">
-  <div class="title">🏫 Sekolah</div>
-  <p>06.00 - 16.00</p>
-</div><div class="card">
-  <div class="title">🌙 Malam</div>
-  <p>20.30 - 21.00 → Tugas Sekolah</p>
-  <p>21.00 - 21.30 → Pelajaran Kitab</p>
-  <p>21.30 - 22.00 → Membaca</p>
-</div><div class="card checklist">
-  <div class="title">✅ Checklist Harian</div>
-  <label><input type="checkbox"> Hafalan Qur'an</label>
-  <label><input type="checkbox"> Matan</label>
-  <label><input type="checkbox"> Kitab</label>
-  <label><input type="checkbox"> Tugas Sekolah</label>
-</div><div class="footer">
-  Dibuat oleh Ishaq 🚀
-</div></body>
+<body><header>
+  <h1>📚 Jadwal Belajar Ishaq</h1>
+  <p id="tanggal"></p>
+</header><nav>
+  <button onclick="showMenu('utama')">Menu Utama</button>
+  <button onclick="showMenu('hafalan')">Hafalan</button>
+  <button onclick="showMenu('baca')">Membaca</button>
+  <button onclick="showMenu('murajaah')">Murajaah</button>
+</nav><div class="content" id="content"></div><script>
+const jadwal = {
+  utama: `
+    <div class='card'>
+    <h3>Hari Sekolah + Taklim</h3>
+    <p>04:30 - 05:30 : Hafalan Al-Qur'an & Qowaidul Arba</p>
+    <p>06:00 - 16:00 : Sekolah</p>
+    <p>18:00 - 20:00 : Taklim</p>
+    <p>20:15 - 21:45 : Belajar Kitab</p>
+    <p>21:45 - 22:15 : Tugas Sekolah</p>
+    </div>
+
+    <div class='card'>
+    <h3>Hari Non Taklim (Latihan Anggar)</h3>
+    <p>04:30 - 05:30 : Hafalan</p>
+    <p>06:00 - 16:00 : Sekolah</p>
+    <p>16:00 - 20:30 : Latihan Anggar</p>
+    <p>20:45 - 21:45 : Belajar Ringan</p>
+    <p>21:45 - 22:15 : Tugas</p>
+    </div>
+
+    <div class='card'>
+    <h3>Jumat (Free)</h3>
+    <p>Pagi: Hafalan</p>
+    <p>Siang: Istirahat</p>
+    <p>Malam: Belajar Bebas</p>
+    </div>
+  `,
+
+  hafalan: `
+    <div class='card'>
+    <h3>Hafalan Harian</h3>
+    <p>Al-Qur'an : 30 menit</p>
+    <p>Matan Qowaidul Arba : 30 menit</p>
+    </div>
+  `,
+
+  baca: `
+    <div class='card'>
+    <h3>Jadwal Membaca</h3>
+    <p>Kitabut Tauhid</p>
+    <p>Mukhtasor Fi Tafsir</p>
+    <p>Adabul Mufrod</p>
+    </div>
+  `,
+
+  murajaah: `
+    <div class='card'>
+    <h3>Murajaah</h3>
+    <p>Al-Qur'an</p>
+    <p>Kitab</p>
+    <p>Matan</p>
+    </div>
+  `
+};
+
+function showMenu(menu){
+  document.getElementById('content').innerHTML = jadwal[menu];
+}
+
+// tanggal otomatis
+const hari = new Date();
+document.getElementById('tanggal').innerText = hari.toDateString();
+
+// auto berubah menu berdasarkan tanggal
+const day = hari.getDate();
+if(day % 2 == 0){
+  showMenu('utama');
+} else {
+  showMenu('hafalan');
+}
+</script></body>
 </html>
