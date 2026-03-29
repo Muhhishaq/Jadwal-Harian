@@ -1,130 +1,38 @@
-<!DOCTYPE html><html lang="id">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Planner Belajar Ishaq</title>
-  <style>
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: #0a0a0a;
-      color: #ffffff;
-    }
-    header {
-      padding: 20px;
-      text-align: center;
-      border-bottom: 1px solid #333;
-    }
-    nav {
-      display: flex;
-      justify-content: space-around;
-      border-bottom: 1px solid #333;
-    }
-    nav button {
-      flex: 1;
-      padding: 15px;
-      background: none;
-      border: none;
-      color: white;
-      cursor: pointer;
-    }
-    nav button:hover {
-      background: #111;
-    }
-    .content {
-      padding: 20px;
-    }
-    .hidden { display: none; }
-  </style>
-</head>
-<body><header>
-  <h1 id="mainTitle">Planner Harian</h1>
-</header><nav>
-  <button onclick="showMenu('home')">Home</button>
-  <button onclick="showMenu('jadwal')">Jadwal</button>
-  <button onclick="showMenu('pelajaran')">Pelajaran</button>
-  <button onclick="showMenu('murajaah')">Murajaah</button>
-  <button onclick="showMenu('hafalan')">Hafalan</button>
-</nav><div class="content">
-  <div id="home">
-    <h2 id="dateTitle"></h2>
-    <p>Semangat belajar hari ini!</p>
-  </div>  <div id="jadwal" class="hidden">
-    <h2>Jadwal Harian</h2>
-    <p><b>Senin (Taklim + Sekolah)</b><br>
-    04:30 - Bangun<br>
-    05:00 - Murajaah Alquran<br>
-    06:00 - 16:00 Sekolah<br>
-    18:00 - 20:00 Taklim (Bulughul Maram)<br>
-    20:15 - 21:45 Belajar Kitab<br>
-    22:00 - Tugas Sekolah<br>
-    22:30 - Tidur</p><p><b>Selasa (Anggar)</b><br>
-04:30 - Bangun<br>
-05:00 - Hafalan<br>
-06:00 - 16:00 Sekolah<br>
-16:00 - 20:30 Anggar<br>
-21:00 - Tugas Sekolah<br>
-22:30 - Tidur</p>
+import { useState, useEffect } from "react";
 
-<p><b>Rabu (Taklim)</b><br>
-Sama seperti Senin (Riyadusshalihin)</p>
+const schedule = { Senin: [ "06:00-16:00 Sekolah", "18:00-20:00 Taklim (Bulughul Maram)", "20:15-20:45 Shofwatuzzubad", "20:45-21:15 Tsalatsatul Ushul", "21:15-21:45 Nahwu", "21:45-22:15 Tugas Sekolah", ], Selasa: [ "06:00-16:00 Sekolah", "16:00-20:30 Latihan Anggar", "20:45-21:45 Durusullughoh", "21:45-22:15 Shorof", ], Rabu: [ "06:00-16:00 Sekolah", "18:00-20:00 Taklim (Riyadusshalihin)", "20:15-21:15 Durusullughoh", "21:15-21:45 Nahwu", "21:45-22:15 Tugas Sekolah", ], Kamis: [ "06:00-16:00 Sekolah", "18:00-20:00 Taklim (Fikih & Asmaul Husna)", "20:15-20:45 Shofwatuzzubad", "20:45-21:15 Tsalatsatul Ushul", "21:15-21:45 Shorof", "21:45-22:15 Tugas Sekolah", ], Jumat: [ "06:00-16:00 Sekolah", "16:30-17:30 Hafalan (Alquran & Matan)", "19:00-20:00 Membaca Kitab", "20:00-20:30 Murajaah", ], Sabtu: [ "16:00-20:30 Latihan Anggar", "20:45-21:15 Shofwatuzzubad", "21:15-21:45 Nahwu", "21:45-22:15 Tugas Sekolah", ], Ahad: [ "18:00-20:00 Taklim (Shahih Bukhari)", "20:15-21:00 Durusullughoh", "21:00-21:30 Shorof", "21:30-22:00 Murajaah", ], };
 
-<p><b>Kamis (Taklim)</b><br>
-Sama seperti Senin (Fikih & Asmaul Husna)</p>
+export default function App() { const [day, setDay] = useState("");
 
-<p><b>Jumat (Free)</b><br>
-04:30 - Bangun<br>
-05:00 - Hafalan<br>
-06:00 - 16:00 Sekolah<br>
-16:30 - 18:30 Belajar Kitab<br>
-20:00 - Tugas<br>
-22:30 - Tidur</p>
+useEffect(() => { const days = [ "Ahad", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu", ]; const today = new Date().getDay(); setDay(days[today]); }, []);
 
-<p><b>Sabtu (Anggar)</b><br>
-Sama seperti Selasa</p>
+return ( <div className="min-h-screen bg-black text-white p-5"> <h1 className="text-3xl font-bold mb-5 text-center"> Jadwal Hari Ini ({day}) </h1>
 
-<p><b>Ahad (Taklim)</b><br>
-04:30 - Bangun<br>
-05:00 - Murajaah<br>
-06:00 - 08:00 Taklim (Shahih Bukhari)<br>
-08:30 - 10:30 Belajar Kitab<br>
-16:00 - 20:30 Anggar<br>
-22:30 - Tidur</p>
-
-  </div>  <div id="pelajaran" class="hidden">
-    <h2>Pelajaran Harian</h2>
-    <ul>
-      <li>Shofwatuzzubad - 30 menit</li>
-      <li>Tsalatsatul Ushul - 30 menit</li>
-      <li>Nahwu - 30 menit</li>
-      <li>Durusul Lughoh - 1 jam</li>
-      <li>Shorof - 30 menit</li>
-    </ul>
-  </div>  <div id="murajaah" class="hidden">
-    <h2>Murajaah</h2>
-    <ul>
-      <li>Alquran</li>
-      <li>Kitab</li>
-      <li>Matan</li>
-    </ul>
-  </div>  <div id="hafalan" class="hidden">
-    <h2>Hafalan</h2>
-    <ul>
-      <li>Matan Qowaidul Arba</li>
-      <li>Alquran</li>
-    </ul>
+<div className="space-y-3">
+    {schedule[day]?.map((item, index) => (
+      <div
+        key={index}
+        className="p-3 border border-white rounded-2xl"
+      >
+        {item}
+      </div>
+    ))}
   </div>
-</div><script>
-function showMenu(menu) {
-  document.querySelectorAll('.content > div').forEach(div => {
-    div.classList.add('hidden');
-  });
-  document.getElementById(menu).classList.remove('hidden');
-}
 
-// Auto tanggal
-const today = new Date();
-const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-document.getElementById('dateTitle').innerText = today.toLocaleDateString('id-ID', options);
-</script></body>
-</html>
+  <div className="mt-10">
+    <h2 className="text-xl mb-3">Pilih Hari</h2>
+    <div className="grid grid-cols-3 gap-2">
+      {Object.keys(schedule).map((d) => (
+        <button
+          key={d}
+          onClick={() => setDay(d)}
+          className="border p-2 rounded-xl hover:bg-white hover:text-black"
+        >
+          {d}
+        </button>
+      ))}
+    </div>
+  </div>
+</div>
+
+); }
