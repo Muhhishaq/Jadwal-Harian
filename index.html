@@ -1,38 +1,145 @@
-import { useState, useEffect } from "react";
+<!DOCTYPE html><html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Jadwal Belajar</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #0d0d0d;
+      color: white;
+    }
+    header {
+      padding: 15px;
+      text-align: center;
+      border-bottom: 1px solid #333;
+    }
+    nav {
+      display: flex;
+      justify-content: space-around;
+      padding: 10px;
+      border-bottom: 1px solid #333;
+    }
+    nav button {
+      background: none;
+      border: none;
+      color: white;
+      font-size: 14px;
+      cursor: pointer;
+    }
+    .container {
+      padding: 15px;
+    }
+    .card {
+      background: #1a1a1a;
+      padding: 15px;
+      margin-bottom: 10px;
+      border-radius: 10px;
+    }
+    .hidden { display: none; }
+  </style>
+</head>
+<body><header>
+  <h2>Jadwal Belajar</h2>
+</header><nav>
+  <button onclick="showMenu('utama')">Utama</button>
+  <button onclick="showMenu('harian')">Jadwal Harian</button>
+  <button onclick="showMenu('pelajaran')">Pelajaran</button>
+  <button onclick="showMenu('murajaah')">Murajaah</button>
+  <button onclick="showMenu('hafalan')">Hafalan</button>
+</nav><div class="container">  <div id="utama"></div>  <div id="harian" class="hidden">
+    <button onclick="showDay('senin')">Senin</button>
+    <button onclick="showDay('selasa')">Selasa</button>
+    <button onclick="showDay('rabu')">Rabu</button>
+    <button onclick="showDay('kamis')">Kamis</button>
+    <button onclick="showDay('jumat')">Jumat</button>
+    <button onclick="showDay('sabtu')">Sabtu</button>
+    <button onclick="showDay('ahad')">Ahad</button><div id="jadwalHari"></div>
 
-const schedule = { Senin: [ "06:00-16:00 Sekolah", "18:00-20:00 Taklim (Bulughul Maram)", "20:15-20:45 Shofwatuzzubad", "20:45-21:15 Tsalatsatul Ushul", "21:15-21:45 Nahwu", "21:45-22:15 Tugas Sekolah", ], Selasa: [ "06:00-16:00 Sekolah", "16:00-20:30 Latihan Anggar", "20:45-21:45 Durusullughoh", "21:45-22:15 Shorof", ], Rabu: [ "06:00-16:00 Sekolah", "18:00-20:00 Taklim (Riyadusshalihin)", "20:15-21:15 Durusullughoh", "21:15-21:45 Nahwu", "21:45-22:15 Tugas Sekolah", ], Kamis: [ "06:00-16:00 Sekolah", "18:00-20:00 Taklim (Fikih & Asmaul Husna)", "20:15-20:45 Shofwatuzzubad", "20:45-21:15 Tsalatsatul Ushul", "21:15-21:45 Shorof", "21:45-22:15 Tugas Sekolah", ], Jumat: [ "06:00-16:00 Sekolah", "16:30-17:30 Hafalan (Alquran & Matan)", "19:00-20:00 Membaca Kitab", "20:00-20:30 Murajaah", ], Sabtu: [ "16:00-20:30 Latihan Anggar", "20:45-21:15 Shofwatuzzubad", "21:15-21:45 Nahwu", "21:45-22:15 Tugas Sekolah", ], Ahad: [ "18:00-20:00 Taklim (Shahih Bukhari)", "20:15-21:00 Durusullughoh", "21:00-21:30 Shorof", "21:30-22:00 Murajaah", ], };
+  </div>  <div id="pelajaran" class="hidden">
+    <div class="card">Shofwatuzzubad - 30 menit</div>
+    <div class="card">Tsalatsatul Ushul - 30 menit</div>
+    <div class="card">Nahwu - 30 menit</div>
+    <div class="card">Durusul Lughoh - 1 jam</div>
+    <div class="card">Shorof - 30 menit</div>
+  </div>  <div id="murajaah" class="hidden">
+    <div class="card">Al-Quran</div>
+    <div class="card">Kitab</div>
+    <div class="card">Matan</div>
+  </div>  <div id="hafalan" class="hidden">
+    <div class="card">Matan Qowaidul Arba</div>
+    <div class="card">Al-Quran</div>
+  </div></div><script>
 
-export default function App() { const [day, setDay] = useState("");
+const jadwal = {
+  senin: [
+    "06:00-16:00 Sekolah",
+    "18:00-20:00 Taklim (Bulughul Maram)",
+    "20:00-21:30 Belajar Kitab",
+    "21:30-22:00 Tugas Sekolah",
+  ],
+  selasa: [
+    "06:00-16:00 Sekolah",
+    "16:00-20:30 Latihan Anggar",
+    "21:00-22:00 Belajar Ringan",
+  ],
+  rabu: [
+    "06:00-16:00 Sekolah",
+    "18:00-20:00 Taklim (Riyadusshalihin)",
+    "20:00-21:30 Belajar Kitab",
+    "21:30-22:00 Tugas",
+  ],
+  kamis: [
+    "06:00-16:00 Sekolah",
+    "18:00-20:00 Taklim (Fikih & Asmaul Husna)",
+    "20:00-21:30 Belajar Kitab",
+    "21:30-22:00 Tugas",
+  ],
+  jumat: [
+    "06:00-16:00 Sekolah",
+    "20:00-21:30 Belajar (non kitab)",
+    "21:30-22:00 Tugas",
+  ],
+  sabtu: [
+    "16:00-20:30 Latihan Anggar",
+    "21:00-22:00 Murajaah",
+  ],
+  ahad: [
+    "18:00-20:00 Taklim (Shahih Bukhari)",
+    "20:00-21:30 Belajar Kitab",
+  ]
+};
 
-useEffect(() => { const days = [ "Ahad", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu", ]; const today = new Date().getDay(); setDay(days[today]); }, []);
+function showMenu(menu) {
+  document.querySelectorAll('.container > div').forEach(div => div.classList.add('hidden'));
+  document.getElementById(menu).classList.remove('hidden');
+}
 
-return ( <div className="min-h-screen bg-black text-white p-5"> <h1 className="text-3xl font-bold mb-5 text-center"> Jadwal Hari Ini ({day}) </h1>
+function showDay(day) {
+  const container = document.getElementById('jadwalHari');
+  container.innerHTML = '';
+  jadwal[day].forEach(item => {
+    container.innerHTML += `<div class='card'>${item}</div>`;
+  });
+}
 
-<div className="space-y-3">
-    {schedule[day]?.map((item, index) => (
-      <div
-        key={index}
-        className="p-3 border border-white rounded-2xl"
-      >
-        {item}
-      </div>
-    ))}
-  </div>
+function getToday() {
+  const days = ['minggu','senin','selasa','rabu','kamis','jumat','sabtu'];
+  const today = days[new Date().getDay()];
+  return today === 'minggu' ? 'ahad' : today;
+}
 
-  <div className="mt-10">
-    <h2 className="text-xl mb-3">Pilih Hari</h2>
-    <div className="grid grid-cols-3 gap-2">
-      {Object.keys(schedule).map((d) => (
-        <button
-          key={d}
-          onClick={() => setDay(d)}
-          className="border p-2 rounded-xl hover:bg-white hover:text-black"
-        >
-          {d}
-        </button>
-      ))}
-    </div>
-  </div>
-</div>
+function loadToday() {
+  const today = getToday();
+  const utama = document.getElementById('utama');
+  utama.innerHTML = `<h3>Jadwal Hari Ini (${today})</h3>`;
+  jadwal[today].forEach(item => {
+    utama.innerHTML += `<div class='card'>${item}</div>`;
+  });
+}
 
-); }
+loadToday();
+
+</script></body>
+    </html>
